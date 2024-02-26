@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navegación</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a routerLink="/home" routerLinkActive="router-link-active"  class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/tareas" routerLinkActive="router-link-active"  class="nav-link" >Tareas</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           Listados
+          </a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="/tareasPendientes" routerLinkActive="router-link-active"  class="dropdown-item" href="#">Lista de tareas pendientes</a></li>
+            <li><a routerLink="/tareasProgreso" routerLinkActive="router-link-active" class="dropdown-item" href="#">Lista de tareas en progreso</a></li>
+            <li><a routerLink="/tareasCompletadas" routerLinkActive="router-link-active" class="dropdown-item" href="#">Lista de tareas Completadas</a></li>
+            <li><a routerLink="/switch17" routerLinkActive="router-link-active" class="dropdown-item" href="#">Lista de tareas de un usuario</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

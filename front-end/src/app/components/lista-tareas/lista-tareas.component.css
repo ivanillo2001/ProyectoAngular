@@ -1,0 +1,14 @@
+#tareas{
+    font-family: fantasy;
+    font-size: 30px;
+    color: rgb(198, 76, 76);
+}
+.pendiente{
+    color: green;
+}
+.enProgreso{
+    color: blue;
+}
+.completada{
+    color: red;
+}

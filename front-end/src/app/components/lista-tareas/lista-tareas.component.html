@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col">
+        <h1 id="tareas">TAREAS</h1>
+        <div class="agregar">
+          <a href="/formTareas"><button mat-raised-button color="primary">Añadir Tarea</button></a>
+        </div>
+        <hr>
+        <div class="mat-elevation-z8">
+              <!-- Tabla -->
+            <table mat-table [dataSource]="dataSource" matSort >
+                <!-- id Column -->
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> id </th>
+                  <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.id}} </td>
+                </ng-container>
+              
+                <!-- titulo Column -->
+                <ng-container matColumnDef="titulo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> titulo </th>
+                  <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.titulo | mayuscula}} </td>
+                </ng-container>
+              
+                <!-- descripcion Column -->
+                <ng-container matColumnDef="descripcion" >
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> descripcion </th>
+                  <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.descripcion | mayuscula}} </td>
+                </ng-container>
+              
+                <!-- fecha Column -->
+                <ng-container matColumnDef="fechaCreacion">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> fecha de creacion </th>
+                  <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.fechaCreacion | replaceDash}} </td>
+                </ng-container> 
+                  <!-- estado column -->
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> estado </th>
+                    <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.estado}} </td>
+                  </ng-container>
+                  <!-- idUsuario column -->
+                  <ng-container matColumnDef="idUsuario">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> idUsuario </th>
+                    <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}"> {{element.idUsuario}} </td>
+                  </ng-container>
+                  <!-- Importancia Column -->
+                  <ng-container matColumnDef="importancia">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Importancia </th>
+                    <td mat-cell *matCellDef="let element"[ngClass]="{'pendiente': element.estado == 'pendiente','enProgreso': element.estado == 'en progreso','completada': element.estado == 'completada'}">
+                      <ng-container *ngFor="let i of getImportancia(element.importancia)">
+                        <mat-icon>star</mat-icon>
+                      </ng-container>
+                    </td>
+                  </ng-container>
+                <!-- Acciones de la tabla -->
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a [ngStyle]="{'color': 'white'}" matTooltip="Editar tarea" class="pointer">
+                            <mat-icon >edit</mat-icon>
+                        </a>
+                        <a [ngStyle]="{'color': '#e15639'}" matTooltip="Eliminar tarea" class="pointer" (click)="eliminarTarea(element)">
+                            <mat-icon >delete</mat-icon>
+                        </a>
+    
+                    </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              @if (!dataSource||dataSource.data.length==0) {
+                <p class="text-center my-3">No hay tareas registradas</p>
+              }
+              <mat-paginator [pageSizeOptions]="[3, 5, 10, 25, 100]" aria-label="Selecciona pagina de clientes"></mat-paginator>    
+        </div>
+    </div>
+</div>
