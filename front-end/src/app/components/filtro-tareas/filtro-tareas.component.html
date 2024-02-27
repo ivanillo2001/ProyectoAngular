@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <h1 id="tareas">TAREAS EN PROGRESO</h1>
+        <h1 id="tareas">TAREAS</h1>
         <hr>
         <div class="mat-elevation-z8">
               <!-- Tabla -->
@@ -8,7 +8,7 @@
                 <!-- id Column -->
                 <ng-container matColumnDef="id">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> id </th>
-                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element._id}} </td>
                 </ng-container>
               
                 <!-- titulo Column -->

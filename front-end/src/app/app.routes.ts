@@ -10,20 +10,21 @@ export const routes: Routes = [
     loadComponent:()=>import('./components/lista-tareas/lista-tareas.component').then(c=>c.ListaTareasComponent)
    },
    {
-    path:'tareasCompletadas',
-    loadComponent:()=>import('./components/tareas-completadas/tareas-completadas.component').then(c=>c.TareasCompletadasComponent)
-   },
-   {
-    path:'tareasProgreso',
-    loadComponent:()=>import('./components/tareas-progreso/tareas-progreso.component').then(c=>c.TareasProgresoComponent)
-   },
-   {
-    path:'tareasPendientes',
-    loadComponent:()=>import('./components/tareas-pendientes/tareas-pendientes.component').then(c=>c.TareasPendientesComponent)
+    path:'tareasEstado/:estado',
+    loadComponent:()=>import('./components/filtro-tareas/filtro-tareas.component').then(c=>c.FiltroTareasComponent)
    },
    {
     path:'formTareas',
     loadComponent:()=>import('./components/formulario/formulario.component').then(c=>c.FormularioComponent)
+   },
+   
+   {
+    path:'tareasUsuario',
+    loadComponent:()=>import('./components/tareas-usuario/tareas-usuario.component').then(c=>c.TareasUsuarioComponent)
+   },
+   {
+    path:'tareasUsuario/_id',
+    loadComponent:()=>import('./components/tareas-usuario/tareas-usuario.component').then(c=>c.TareasUsuarioComponent)
    },
     {//localhost:4200
         path:'',

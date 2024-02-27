@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Tarea } from '../modelos/tarea';
-import { Usuario } from '../modelos/Usuario'
+import { Usuario } from '../modelos/usuario';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,10 @@ export class TareasService {
     );
   }
 
-  mostrarTareasCompletadas(): Observable<Tarea[]> {
-    return this.http.get<Tarea[]>(`${this.url}/tareasCompletadas`).pipe(
+
+
+  mostrarTareasFiltradas(estado:string):Observable<Tarea[]>{
+    return this.http.get<Tarea[]>(`${this.url}/tareasEstado/${estado}`).pipe(
       catchError(error => {
         console.log(`Error al obtener las tareas ${error}`);
         return of([])//en el caso de que haya error devuelve un error vacío
@@ -31,23 +34,6 @@ export class TareasService {
     );
   }
   
-  mostrarTareasPendientes(): Observable<Tarea[]> {
-    return this.http.get<Tarea[]>(`${this.url}/tareasPendientes`).pipe(
-      catchError(error => {
-        console.log(`Error al obtener las tareas ${error}`);
-        return of([])//en el caso de que haya error devuelve un error vacío
-      })
-    );
-  }
-
-  mostrarTareasProgreso(): Observable<Tarea[]> {
-    return this.http.get<Tarea[]>(`${this.url}/tareasProgreso`).pipe(
-      catchError(error => {
-        console.log(`Error al obtener las tareas ${error}`);
-        return of([])//en el caso de que haya error devuelve un error vacío
-      })
-    );
-  }
 
   mostrarUsuario(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`${this.url}/usuarios`).pipe(
@@ -70,8 +56,8 @@ export class TareasService {
     );//con esto hacemos el get de los clientes
   }
   //funcion eliminar tarea
-  eliminarTarea(id: number): Observable<boolean> {
-    return this.http.delete(`${this.url}/eliminarTarea/${id}`).pipe(
+  eliminarTarea(_id: string): Observable<boolean> {
+    return this.http.delete(`${this.url}/eliminarTarea/${_id}`).pipe(
       map(() => true),
       catchError(error => {
         console.log(`Error al eliminar la tarea ${error}`);
@@ -92,7 +78,17 @@ export class TareasService {
     );//con esto hacemos el get de los clientes
   }
 
-
+  mostrarTareasUsuario(nombre:string):Observable<Tarea[]>{
+    return this.http.get<Tarea[]>(`${this.url}/tareasUsuario/${nombre}`).pipe(
+      map(res=>{
+        return res
+      }),
+      catchError(error=>{
+        console.log(`Error al obtener el cliente ${error}`);
+        return of([])//en el caso de que haya error devuelve un error vacío
+      })
+    );//con esto hacemos el get de los clientes
+  }
   
 }
 

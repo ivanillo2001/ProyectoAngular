@@ -68,7 +68,7 @@ export class ListaTareasComponent implements OnInit{
     }).then(result=>{
       if (result.isConfirmed) {
         //borrar Cliente
-        this.serv_tarea.eliminarTarea(Number(tarea.id)).subscribe(
+        this.serv_tarea.eliminarTarea(String(tarea._id)).subscribe(
           res=>{
             this._snackBar.open("Tarea eliminada",'Cerrar',{
               duration:1500,
