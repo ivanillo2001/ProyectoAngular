@@ -9,6 +9,6 @@ import { FechaFormateadaPipe } from '../../pipes/fecha-formateada.pipe';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  titulo:string = 'GESTION DE TAREAS'
+  titulo:string = 'TASKHUB'
   fecha = new Date()
 }
