@@ -16,7 +16,7 @@ import { FechaFormateadaPipe } from '../../pipes/fecha-formateada.pipe';
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css'
 })
-export class FormularioComponent implements OnInit{
+export class FormularioComponent implements OnInit {
   public frm!: FormGroup; // declaras el formulario
   public tarea!: Tarea;
   private serv_tarea = inject(TareasService);
@@ -25,15 +25,16 @@ export class FormularioComponent implements OnInit{
   private _activedRouter = inject(ActivatedRoute);
   public idTarea!: number;
   public usuarios?: Usuario[] = [];
+  public formEnviado: boolean = false;
 
   constructor(private fb: FormBuilder) {
 
     this.frm = this.fb.group({
       titulo: ['', [Validators.required]],
-      importancia: ['',[Validators.required]],
-      estado: ['',[Validators.required]],
-      usuario: ['',[Validators.required]],
-      descripcion: ['',[Validators.required]]
+      importancia: ['', [Validators.required]],
+      estado: ['', [Validators.required]],
+      usuario: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]]
     });
   }
   ngOnInit(): void {
@@ -53,48 +54,51 @@ export class FormularioComponent implements OnInit{
   }
 
   grabarDatos() {
-    // Implementa la lógica para guardar los datos del formulario
+    this.formEnviado = true; // Marcar el formulario como enviado
+    if (this.frm.valid) {
+      // Implementa la lógica para guardar los datos del formulario
       // Obtener el ID del usuario seleccionado
-  const idUsuarioSeleccionado = this.frm.get('usuario')?.value;
+      const idUsuarioSeleccionado = this.frm.get('usuario')?.value;
 
-  // Asignar el ID del usuario al objeto antes de enviarlo al servicio
-  const tareaConUsuario = {
-    ...this.frm.value,
-    idUsuario: idUsuarioSeleccionado,
-    fechaCreacion: this.crearFecha()
-  };
-  // Llamar a la función crearTarea con el objeto modificado
-  this.crearTarea(tareaConUsuario);
+      // Asignar el ID del usuario al objeto antes de enviarlo al servicio
+      const tareaConUsuario = {
+        ...this.frm.value,
+        idUsuario: idUsuarioSeleccionado,
+        fechaCreacion: this.crearFecha()
+      };
+      // Llamar a la función crearTarea con el objeto modificado
+      this.crearTarea(tareaConUsuario);
+    }
   }
 
-  crearFecha(){
+  crearFecha() {
     const fecha = new Date();
     const year = fecha.getFullYear()
-    const month = fecha.getMonth()+1
+    const month = fecha.getMonth() + 1
     const day = fecha.getDate()
 
-    const fechaFormateada =`${day}/${month}/${year}`
+    const fechaFormateada = `${day}/${month}/${year}`
     return fechaFormateada
   }
-  crearTarea(tarea:Tarea):void{
+  crearTarea(tarea: Tarea): void {
     this.serv_tarea.crearTarea(tarea).subscribe(
-      res=>{
+      res => {
         if (res) {
           console.log(res);
-        this.mensaje("Tarea grabada");
-        this.frm.reset();//limpiar el formulario
-        //redirigimos a tareas
-        this._router.navigate(['/tareas']);//cargar el componente tareas
-        }else{
-        this.mensaje("Cliente no grabado");
+          this.mensaje("Tarea grabada");
+          this.frm.reset();//limpiar el formulario
+          //redirigimos a tareas
+          this._router.navigate(['/tareas']);//cargar el componente tareas
+        } else {
+          this.mensaje("Cliente no grabado");
         }
       }
     )
   }
-  mensaje(texto:string):void{
-    this._snackBar.open(texto,"Cerrar"),{
-      duration:1500,
-      verticalPosition:'top',
+  mensaje(texto: string): void {
+    this._snackBar.open(texto, "Cerrar"), {
+      duration: 1500,
+      verticalPosition: 'top',
 
     }
   }
