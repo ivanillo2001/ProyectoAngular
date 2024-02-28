@@ -26,6 +26,10 @@ export const routes: Routes = [
     path:'tareasUsuario/_id',
     loadComponent:()=>import('./components/tareas-usuario/tareas-usuario.component').then(c=>c.TareasUsuarioComponent)
    },
+   {
+    path:'formTareas/_id',
+    loadComponent:()=>import('./components/formulario/formulario.component').then(c=>c.FormularioComponent)
+   },
     {//localhost:4200
         path:'',
         redirectTo:'/home',

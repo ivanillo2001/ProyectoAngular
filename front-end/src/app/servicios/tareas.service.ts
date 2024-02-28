@@ -44,16 +44,16 @@ export class TareasService {
     );
   }
   
-  mostrarTarea(id:number):Observable<Tarea>{
-    return this.http.get<Tarea>(`${this.url}/tarea/${id}`).pipe(
+  mostrarTarea(_id:string):Observable<Tarea>{
+    return this.http.get<Tarea>(`${this.url}/tareas/${_id}`).pipe(
       map(res=>{
         return res
       }),
       catchError(error=>{
-        console.log(`Error al obtener el cliente ${error}`);
+        console.log(`Error al obtener la tarea ${error}`);
         return of({} as Tarea)//en el caso de que haya error devuelve un error vacío
       })
-    );//con esto hacemos el get de los clientes
+    );
   }
   //funcion eliminar tarea
   eliminarTarea(_id: string): Observable<boolean> {
@@ -75,7 +75,7 @@ export class TareasService {
         console.log(`Error al insertar el cliente ${error}`);
         return of (false)//en el caso de que haya error devuelve un error vacío
       })
-    );//con esto hacemos el get de los clientes
+    );
   }
 
   mostrarTareasUsuario(nombre:string):Observable<Tarea[]>{
@@ -87,7 +87,19 @@ export class TareasService {
         console.log(`Error al obtener el cliente ${error}`);
         return of([])//en el caso de que haya error devuelve un error vacío
       })
-    );//con esto hacemos el get de los clientes
+    );
+  }
+
+  editarTarea(tarea:Tarea, _id:string):Observable<boolean>{
+    return this.http.put<Tarea>(`${this.url}/editarTarea/${_id}`,tarea).pipe(
+      map(res=>{
+        return true
+      }),
+      catchError(error=>{
+        console.log(`Error al actualizar la tarea ${error}`);
+        return of (false)//en el caso de que haya error devuelve un error vacío
+      })
+    );
   }
   
 }

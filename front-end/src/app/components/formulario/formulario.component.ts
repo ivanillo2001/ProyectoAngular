@@ -7,7 +7,6 @@ import { Tarea } from '../../modelos/tarea';
 import { TareasService } from '../../servicios/tareas.service';
 import { Usuario } from '../../modelos/usuario';
 import { CommonModule } from '@angular/common';
-import { FechaFormateadaPipe } from '../../pipes/fecha-formateada.pipe';
 
 @Component({
   selector: 'app-formulario',
@@ -19,25 +18,33 @@ import { FechaFormateadaPipe } from '../../pipes/fecha-formateada.pipe';
 export class FormularioComponent implements OnInit {
   public frm!: FormGroup; // declaras el formulario
   public tarea!: Tarea;
+  constructor(private fb:FormBuilder){}
   private serv_tarea = inject(TareasService);
   private _snackBar = inject(MatSnackBar);
   private _router = inject(Router);
   private _activedRouter = inject(ActivatedRoute);
-  public idTarea!: number;
+  public idTarea!: string;
   public usuarios?: Usuario[] = [];
   public formEnviado: boolean = false;
+  public _idTarea!:string //para editar la tarea necesitamos saber el id
 
-  constructor(private fb: FormBuilder) {
-
-    this.frm = this.fb.group({
-      titulo: ['', [Validators.required]],
-      importancia: ['', [Validators.required]],
-      estado: ['', [Validators.required]],
-      usuario: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]]
-    });
-  }
+  
   ngOnInit(): void {
+      this.frm = this.fb.group({
+        titulo: ['', [Validators.required]],
+        importancia: ['', [Validators.required]],
+        estado: ['', [Validators.required]],
+        usuario: ['', [Validators.required]],
+        descripcion: ['', [Validators.required]]
+      });
+    this._activedRouter.params.subscribe(
+      params=>{
+        this._idTarea=params['_id'];
+        if (this.idTarea) {
+          this.cargarTarea();
+        }
+      }
+    )
     this.mostrarUsuarios()
   }
 
@@ -62,9 +69,9 @@ export class FormularioComponent implements OnInit {
 
       // Asignar el ID del usuario al objeto antes de enviarlo al servicio
       const tareaConUsuario = {
-        ...this.frm.value,
+        ...this.frm.value,//carga de todo el formulario
         idUsuario: idUsuarioSeleccionado,
-        fechaCreacion: this.crearFecha()
+        fechaCreacion: this.crearFecha()//función para crear fecha
       };
       // Llamar a la función crearTarea con el objeto modificado
       this.crearTarea(tareaConUsuario);
@@ -101,5 +108,38 @@ export class FormularioComponent implements OnInit {
       verticalPosition: 'top',
 
     }
+  }
+
+  //!Funciones para la edición de la tarea
+
+  //función para mostrar la tarea
+  cargarTarea():void{
+    this.serv_tarea.mostrarTarea(this.idTarea).subscribe(
+      res=>{
+        if (res) {
+          this.frm.controls['titulo'].setValue(res.titulo);
+          this.frm.controls['descripcion'].setValue(res.descripcion);
+          this.frm.controls['fechaCreacion'].setValue(res.fechaCreacion);
+          this.frm.controls['estado'].setValue(res.estado);
+          this.frm.controls['importancia'].setValue(res.importancia);
+          this.frm.controls['idUsuario'].setValue(res.idUsuario);
+        }
+      }
+    )
+  }
+
+  actualizarTarea():void{
+    this.serv_tarea.editarTarea(this.frm.value, this._idTarea).subscribe(
+      res=>{
+        if (res) {
+          this.mensaje("Cliente actualizado")
+          this.frm.reset();
+          this._router.navigate(['/tareas'])
+        }else{
+          this.mensaje("Cliente no actualizado")
+        }
+        
+      }
+    )
   }
 }

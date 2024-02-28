@@ -81,4 +81,8 @@ export class ListaTareasComponent implements OnInit{
       }
     })
   }
+
+  editarTarea(_id:string):void{
+    this.router.navigate([`/formTareas/${_id}`])
+  }
 }
