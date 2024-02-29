@@ -35,7 +35,7 @@ export class TareasService {
   }
   
 
-  mostrarUsuario(): Observable<Usuario[]> {
+  mostrarUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`${this.url}/usuarios`).pipe(
       catchError(error => {
         console.log(`Error al obtener los usuarios ${error}`);
@@ -45,9 +45,9 @@ export class TareasService {
   }
   
   mostrarTarea(_id:string):Observable<Tarea>{
-    return this.http.get<Tarea>(`${this.url}/tareas/${_id}`).pipe(
+    return this.http.get<any>(`${this.url}/tareas/${_id}`).pipe(
       map(res=>{
-        return res
+        return res[0]
       }),
       catchError(error=>{
         console.log(`Error al obtener la tarea ${error}`);

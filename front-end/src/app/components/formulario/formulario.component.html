@@ -42,5 +42,10 @@
     <textarea class="form-control" formControlName="descripcion" rows="3"></textarea>
     <span *ngIf="formEnviado && frm.get('descripcion')?.errors?.['required']">Campo requerido</span>
   </div>
-  <button type="button" class="bg-primary col-6" (click)="grabarDatos()">Enviar</button>
+  @if(!_idTarea){
+    <button type="button" class="bg-primary col-6" (click)="grabarDatos()">Enviar</button>
+  }@else {
+    <button type="button" class="bg-primary col-6" (click)="actualizarTarea()">Enviar</button>
+  }
+ 
 </div>

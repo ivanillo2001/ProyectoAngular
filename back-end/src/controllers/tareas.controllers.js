@@ -31,7 +31,6 @@ export const mostrarTarea = async (req, res) => {
     });
   }
 };
-
 export const getUsuarios = async (req, res) => {
   //argumentos de peticion y respuesta
   try {

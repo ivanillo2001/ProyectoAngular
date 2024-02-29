@@ -27,7 +27,6 @@ export class FormularioComponent implements OnInit {
   public usuarios?: Usuario[] = [];
   public formEnviado: boolean = false;
   public _idTarea!:string //para editar la tarea necesitamos saber el id
-
   
   ngOnInit(): void {
       this.frm = this.fb.group({
@@ -40,7 +39,8 @@ export class FormularioComponent implements OnInit {
     this._activedRouter.params.subscribe(
       params=>{
         this._idTarea=params['_id'];
-        if (this.idTarea) {
+        console.log(this._idTarea);
+        if (this._idTarea) {
           this.cargarTarea();
         }
       }
@@ -49,7 +49,7 @@ export class FormularioComponent implements OnInit {
   }
 
   mostrarUsuarios(): void {
-    this.serv_tarea.mostrarUsuario().subscribe(
+    this.serv_tarea.mostrarUsuarios().subscribe(
       (usuarios: Usuario[]) => {
         console.log(usuarios);
         this.usuarios = usuarios;
@@ -68,13 +68,14 @@ export class FormularioComponent implements OnInit {
       const idUsuarioSeleccionado = this.frm.get('usuario')?.value;
 
       // Asignar el ID del usuario al objeto antes de enviarlo al servicio
-      const tareaConUsuario = {
+      const tarea = {
         ...this.frm.value,//carga de todo el formulario
         idUsuario: idUsuarioSeleccionado,
-        fechaCreacion: this.crearFecha()//función para crear fecha
+        fechaCreacion: this.crearFecha(),//función para crear fecha
+        importancia: +this.frm.get('importancia')?.value // Convertir a número
       };
       // Llamar a la función crearTarea con el objeto modificado
-      this.crearTarea(tareaConUsuario);
+      this.crearTarea(tarea);
     }
   }
 
@@ -114,22 +115,29 @@ export class FormularioComponent implements OnInit {
 
   //función para mostrar la tarea
   cargarTarea():void{
-    this.serv_tarea.mostrarTarea(this.idTarea).subscribe(
+    this.serv_tarea.mostrarTarea(this._idTarea).subscribe(
       res=>{
         if (res) {
-          this.frm.controls['titulo'].setValue(res.titulo);
-          this.frm.controls['descripcion'].setValue(res.descripcion);
-          this.frm.controls['fechaCreacion'].setValue(res.fechaCreacion);
-          this.frm.controls['estado'].setValue(res.estado);
-          this.frm.controls['importancia'].setValue(res.importancia);
-          this.frm.controls['idUsuario'].setValue(res.idUsuario);
+          console.log(res);
+          this.frm.get('titulo')?.setValue(res.titulo);
+          this.frm.get('descripcion')?.setValue(res.descripcion);
+          this.frm.get('estado')?.setValue(res.estado);
+          this.frm.get('importancia')?.setValue(res.importancia);
+          ;
         }
       }
     )
   }
 
   actualizarTarea():void{
-    this.serv_tarea.editarTarea(this.frm.value, this._idTarea).subscribe(
+    const idUsuarioSeleccionado = this.frm.get('usuario')?.value;
+    const formularioActualizado={
+      ...this.frm.value,//carga de todo el formulario
+        idUsuario: idUsuarioSeleccionado,
+        fechaCreacion: this.crearFecha(),//función para crear fecha
+        importancia: +this.frm.get('importancia')?.value // Convertir a número
+    }
+    this.serv_tarea.editarTarea(formularioActualizado, this._idTarea).subscribe(
       res=>{
         if (res) {
           this.mensaje("Cliente actualizado")
