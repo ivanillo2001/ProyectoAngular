@@ -55,6 +55,19 @@ export class TareasService {
       })
     );
   }
+
+  mostrarUsuario(_id:string):Observable<Usuario>{
+    return this.http.get<Usuario>(`${this.url}/usuarios/${_id}`).pipe(
+      map(res=>{
+        return res
+      }),
+      catchError(error=>{
+        console.log(`Error al obtener la tarea ${error}`);
+        return of({} as Usuario)//en el caso de que haya error devuelve un error vacío
+      })
+    );
+  }
+
   //funcion eliminar tarea
   eliminarTarea(_id: string): Observable<boolean> {
     return this.http.delete(`${this.url}/eliminarTarea/${_id}`).pipe(

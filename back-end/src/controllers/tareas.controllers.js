@@ -31,6 +31,23 @@ export const mostrarTarea = async (req, res) => {
     });
   }
 };
+
+export const getUsuario = async (req, res) => {
+  //argumentos de peticion y respuesta
+  try {
+    //hacemos la consulta con mongoDB
+    const {_id}= req.params
+    const database = await conexionBD();
+    const collection = database.collection('Usuario');//obtenemos la coleccion de tareas
+    const result = await collection.find({_id:new ObjectId(_id)}).toArray()
+    res.status(200).json(result); //se manda el valor
+  } catch (error) {
+    res.status(500).json({
+      message: "Error en el servidor",
+    });
+  }
+};
+
 export const getUsuarios = async (req, res) => {
   //argumentos de peticion y respuesta
   try {

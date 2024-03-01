@@ -51,7 +51,6 @@ export class FormularioComponent implements OnInit {
   mostrarUsuarios(): void {
     this.serv_tarea.mostrarUsuarios().subscribe(
       (usuarios: Usuario[]) => {
-        console.log(usuarios);
         this.usuarios = usuarios;
       },
       (error) => {

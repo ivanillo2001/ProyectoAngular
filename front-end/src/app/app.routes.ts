@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent:()=>import('./components/lista-tareas/lista-tareas.component').then(c=>c.ListaTareasComponent)
    },
    {
+    path:'tareasNoMat',
+    loadComponent:()=>import('./components/tareas/tareas.component').then(c=>c.TareasComponent)
+   },
+   {
     path:'tareasEstado/:estado',
     loadComponent:()=>import('./components/filtro-tareas/filtro-tareas.component').then(c=>c.FiltroTareasComponent)
    },

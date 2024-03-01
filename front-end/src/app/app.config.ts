@@ -8,5 +8,5 @@ import localeEs from "@angular/common/locales/es";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 registerLocaleData(localeEs,'es')
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),{provide:LOCALE_ID, useValue:'es'}, provideAnimationsAsync(), importProvidersFrom(HttpClientModule)]
+  providers: [provideRouter(routes),{provide:LOCALE_ID, useValue:'es'}, provideAnimationsAsync(), importProvidersFrom(HttpClientModule), provideAnimationsAsync()]
 };
